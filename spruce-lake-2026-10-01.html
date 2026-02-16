@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<!--
+  app_template.html — Self-contained fishing trip field planner
+
+  Purpose: Mobile-friendly trip reference app. Single HTML file with all data,
+           styles, and logic embedded. Works offline. Replaces PDF output.
+
+  Data injection: Python's generate_app.py replaces {
+  "id": "spruce-lake-2026-10-01",
+  "title": "Spruce Lake Trophy Brookies",
+  "dates": "2026-10-01 to 2026-10-04",
+  "base": "Spruce Lake, West Canada Lakes Wilderness, NY",
+  "status": "planned",
+  "strategy": {
+    "summary": "Base camp at Spruce Lake lean-to #2. Four days focused on the deepest, most productive wild brook trout water in the West Canada Lakes Wilderness. Map structure Day 1, exploit it Days 2-4. Side quest to Balsam Lake for heritage strain trophies.",
+    "modes": [
+      {
+        "name": "Structure Hunt",
+        "trigger": "Day 1 — always",
+        "tipups": "N/A",
+        "target": "Map drop-offs, inlet zones, and submerged structure with sounder",
+        "location": "Full perimeter troll of Spruce Lake"
+      },
+      {
+        "name": "Inlet Mode",
+        "trigger": "Pre-spawn fish staging near Balsam Lake Outlet",
+        "tipups": "N/A",
+        "target": "Trophy brook trout at inlet mouth and adjacent drop-offs",
+        "location": "Northeast shore — Balsam Lake Outlet flow into Spruce Lake"
+      },
+      {
+        "name": "Deep Drop Mode",
+        "trigger": "Bright/calm conditions push fish off shore",
+        "tipups": "N/A",
+        "target": "Troll deep structure edges with Lake Clear Wabblers",
+        "location": "Central basin drop-offs (located during Day 1 scouting)"
+      }
+    ]
+  },
+  "days": [
+    {
+      "day": "Thu 1",
+      "weather": "55/35°F, light wind, partly cloudy",
+      "mode": "Scout",
+      "plan": "<strong>Mission: Map the Lake</strong><br>• <em>Drive + Carry</em> — Jessup River Rd to trailhead, 2.7-mi portage to Spruce Lake<br>• <em>Afternoon</em> — Set up base camp at lean-to #2, launch canoes<br>• <em>Evening troll</em> — Full perimeter figure-8 with Lake Clear Wabblers. Note sounder readings at every point, inlet, and shoreline change. Mark drop-offs on waterproof notepad.<br>• <em>Priority</em> — Locate Balsam Lake Outlet inflow and fish the inlet zone until dark",
+      "rating": "setup"
+    },
+    {
+      "day": "Fri 2",
+      "weather": "53/33°F, calm, overcast expected",
+      "mode": "Structure Hunt",
+      "plan": "<strong>Full Day on Spruce Lake</strong><br>• <em>Dawn (6:30-8:30 AM)</em> — First-light troll over structure found yesterday. Lake Clear Wabbler + worm, figure-8 patterns over drop-offs<br>• <em>Morning (8:30-11:00)</em> — Work inlet zone (Balsam Lake Outlet). Cast streamers into current seam. Switch to dry flies if surface activity<br>• <em>Midday</em> — Rest, re-rig, eat. Explore shoreline on foot for spawning gravel<br>• <em>Afternoon (2:00-sunset)</em> — Troll deep edges. Slow retrieve along any structure mapped yesterday. Switch to woolly buggers in low light",
+      "rating": "best"
+    },
+    {
+      "day": "Sat 3",
+      "weather": "52/32°F, variable, chance of showers",
+      "mode": "Structure Hunt",
+      "plan": "<strong>Balsam Lake Side Quest + Spruce PM</strong><br>• <em>Dawn (6:30-8:30)</em> — Troll Spruce Lake best structure from Days 1-2<br>• <em>Mid-morning (9:00)</em> — Pack light kit, bushwhack 0.5 mi east to Balsam Lake. Heritage Windfall strain brookies — same genetics as current NYS record. Fish are visible but hard to catch. Try small streamers, slow presentation<br>• <em>Afternoon</em> — Return to Spruce Lake. Fish inlet zone through evening bite window<br>• <em>Decision point</em> — If Balsam Lake produces, consider a second bushwhack trip Day 4 AM",
+      "rating": "best"
+    },
+    {
+      "day": "Sun 4",
+      "weather": "50/30°F, clearing, frost heavy",
+      "mode": "Structure Hunt",
+      "plan": "<strong>Last Bite + Pack Out</strong><br>• <em>Dawn (6:30-8:30)</em> — Final session. Fish highest-producing zone from previous days<br>• <em>8:30-9:00 AM</em> — Break camp, pack canoes, police campsite<br>• <em>9:00-11:30</em> — 2.7-mi portage out to trailhead<br>• <em>Noon</em> — Drive to Speculator for lunch. Debrief over food.",
+      "rating": "conditional"
+    }
+  ],
+  "gear": {
+    "bait": [
+      {
+        "item": "Worms (nightcrawlers)",
+        "qty": "2 containers",
+        "use": "Lake Clear Wabbler trailers + bottom fishing. Baitfish prohibited."
+      },
+      {
+        "item": "Wax worms",
+        "qty": "1 container",
+        "use": "Backup for finicky fish, tipping jigs"
+      }
+    ],
+    "tackle": [
+      {
+        "species": "Brook Trout (trolling)",
+        "lures": "Lake Clear Wabblers (gold + silver), Z-Ray spoons (1/8 oz)",
+        "line": "6-8 lb mono, 18\" fluorocarbon leader"
+      },
+      {
+        "species": "Brook Trout (casting)",
+        "lures": "Small Rapalas, inline spinners (Mepps #1-2), small spoons",
+        "line": "4-6 lb mono or braid"
+      },
+      {
+        "species": "Brook Trout (fly)",
+        "lures": "Woolly Buggers (black/olive), Muddler Minnow, Black Ghost, BWO 18-20, Griffiths Gnat",
+        "line": "5-6 wt, floating + sink tip"
+      }
+    ],
+    "tipups": []
+  },
+  "regulations": [
+    {
+      "species": "Brook Trout",
+      "size": "None",
+      "limit": "5/day"
+    },
+    {
+      "species": "Baitfish",
+      "size": "N/A",
+      "limit": "PROHIBITED — no live minnows allowed"
+    },
+    {
+      "species": "Season",
+      "size": "N/A",
+      "limit": "Closes Oct 15 (ponds/lakes)"
+    },
+    {
+      "species": "Motors",
+      "size": "N/A",
+      "limit": "Prohibited — paddle only"
+    }
+  ],
+  "keyInsights": [
+    "Pre-spawn window: Fish are in maximum feeding mode. Water temp 50-58°F puts them at peak metabolic activity near the surface.",
+    "Lake Clear Wabbler is THE lure — 90% of ADK trophy brookies caught on it. Troll figure-8 patterns. On first tap, STOP and feed line — brookies stun prey first, then return.",
+    "Balsam Lake (0.5 mi bushwhack east): Heritage Windfall strain brookies — same genetics as current NYS record 6 lb 3 oz fish. Almost zero pressure.",
+    "Balsam Lake Outlet (northeast shore) is the primary inflow — pre-spawn fish will stage here. Priority fishing zone.",
+    "No bathymetric map exists. Day 1 sounder mapping is critical — locate the drop-offs that hold big fish in the 70-ft basin."
+  ],
+  "decisionTriggers": [
+    {
+      "condition": "Overcast + light wind",
+      "action": "Stay on Spruce Lake all day. Fish are near surface and roaming freely. Troll aggressively.",
+      "color": "#34A853"
+    },
+    {
+      "condition": "Bright sun + calm",
+      "action": "Fish deeper structure edges. Brook trout tuck under cover — focus on bog edges, submerged logs, Balsam Lake Outlet.",
+      "color": "#E8912D"
+    },
+    {
+      "condition": "Rain or heavy overcast",
+      "action": "Best fishing conditions. Stay out as long as conditions are safe. Brook trout feed most aggressively in low light.",
+      "color": "#34A853"
+    },
+    {
+      "condition": "Wind > 15 mph on Spruce",
+      "action": "Fish sheltered shoreline or bushwhack to Balsam Lake. Don't fight whitecaps in canoes.",
+      "color": "#D44638"
+    },
+    {
+      "condition": "No bites after 2 hours in a zone",
+      "action": "Move. Change depth by 10 ft, change retrieval speed, or relocate 200+ yards along shoreline.",
+      "color": "#4A9EBF"
+    },
+    {
+      "condition": "Balsam Lake produces on Day 3",
+      "action": "Return Day 4 dawn for one more session before packing out.",
+      "color": "#9B72CF"
+    }
+  ],
+  "debrief": null
+} with JSON.
+  Field capture: IndexedDB stores photos + notes on-device for /fish-debrief export.
+
+  Created: 2026-02-15
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Spruce Lake Trophy Brookies</title>
+<meta name="theme-color" content="#262E22">
+<meta name="apple-mobile-web-app-title" content="Spruce Lake Trophy Brookies">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN TOKENS — Deep Woods (Adirondack forest palette)
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --bg: #2C3227;
+  --card: #353D30;
+  --card-hover: #3E4738;
+  --accent: #7FA35D;
+  --accent-dim: #5D7A44;
+  --green: #6B9E4A;
+  --orange: #D4944A;
+  --red: #C46050;
+  --purple: #9B7A95;
+  --yellow: #C4A35A;
+  --text: #D8DDD2;
+  --text-dim: #8B9282;
+  --border: #4A5342;
+  --header-bg: #262E22;
+  --toast-bg: #4A5342;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 17px;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════════════════ */
+.header {
+  padding: 20px 16px 12px;
+}
+
+.header h1 {
+  font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.header .subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TABS
+   ═══════════════════════════════════════════════════════════════ */
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin: 0 0 16px;
+  padding: 0 16px;
+}
+
+.tab-bar button {
+  flex: 1;
+  padding: 12px 0;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+
+.tab-bar button.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.tab-content { display: none; padding: 0 16px; }
+.tab-content.active { display: block; }
+
+/* ═══════════════════════════════════════════════════════════════
+   CARDS
+   ═══════════════════════════════════════════════════════════════ */
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.card.dark { background: var(--header-bg); }
+
+.card.clickable {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.card.clickable:active { background: var(--card-hover); }
+
+/* ═══════════════════════════════════════════════════════════════
+   BADGES
+   ═══════════════════════════════════════════════════════════════ */
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Badge colors set via inline style from JS */
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION HEADERS
+   ═══════════════════════════════════════════════════════════════ */
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section { margin-bottom: 20px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   DAY CARDS
+   ═══════════════════════════════════════════════════════════════ */
+.day-card .day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.day-card .day-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.day-card .mode-bar {
+  width: 4px;
+  height: 36px;
+  border-radius: 2px;
+}
+
+.day-card .day-label {
+  font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.day-card .day-weather {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.day-card .day-detail {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.7;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease, padding-top 0.3s ease;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.day-card.expanded .day-detail {
+  max-height: 2000px;
+  opacity: 1;
+  margin-top: 12px;
+  padding-top: 12px;
+}
+
+.day-detail strong { color: var(--accent); }
+
+/* Chevron indicator for expandable day cards */
+.day-chevron {
+  font-size: 18px;
+  color: var(--text-dim);
+  transition: transform 0.25s ease;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.day-card.expanded .day-chevron { transform: rotate(90deg); }
+
+/* ═══════════════════════════════════════════════════════════════
+   TABLES
+   ═══════════════════════════════════════════════════════════════ */
+.table-card { padding: 0; overflow: hidden; }
+
+.table-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table-card thead tr { background: var(--header-bg); }
+
+.table-card th {
+  padding: 8px 12px;
+  color: var(--text-dim);
+  font-weight: 600;
+  text-align: left;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-card td {
+  padding: 8px 12px;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+}
+
+.table-card td:first-child { color: var(--text); font-weight: 600; }
+
+/* ═══════════════════════════════════════════════════════════════
+   GEAR ITEMS
+   ═══════════════════════════════════════════════════════════════ */
+.gear-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+}
+
+.gear-item .name { font-size: 14px; font-weight: 600; color: var(--text); }
+.gear-item .use { font-size: 14px; color: var(--text-dim); }
+
+.gear-item .qty {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TACKLE & TIPUP CARDS
+   ═══════════════════════════════════════════════════════════════ */
+.detail-row {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.detail-row strong { color: var(--text); }
+
+.tipup-note {
+  margin-top: 4px;
+  color: var(--yellow);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INSIGHTS
+   ═══════════════════════════════════════════════════════════════ */
+.insight-card {
+  padding: 10px 14px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.insight-num {
+  min-width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.insight-text { font-size: 14px; color: var(--text); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════════════════════════
+   DECISION TRIGGERS
+   ═══════════════════════════════════════════════════════════════ */
+.triggers-card {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
+.triggers-card .trigger-line strong {
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FIELD CAPTURE (Results Tab)
+   ═══════════════════════════════════════════════════════════════ */
+.field-empty {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.field-empty .icon { font-size: 40px; margin-bottom: 12px; }
+.field-empty h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.field-empty p { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+
+.capture-form {
+  margin-bottom: 16px;
+}
+
+.capture-form textarea {
+  width: 100%;
+  min-height: 80px;
+  background: var(--header-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+  padding: 12px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.capture-form textarea::placeholder { color: var(--text-dim); }
+
+.capture-form .type-select {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.capture-form .type-btn {
+  padding: 14px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.capture-form .type-btn.active {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.capture-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-primary { background: var(--accent); color: white; }
+.btn-secondary { background: var(--card); color: var(--text-dim); border: 1px solid var(--border); }
+.btn-green { background: var(--green); color: white; }
+.btn-red { background: var(--red); color: white; font-size: 14px; padding: 6px 12px; }
+
+.btn:active { opacity: 0.8; }
+
+.camera-input { display: none; }
+
+/* Field entries list */
+.field-entry {
+  position: relative;
+}
+
+.field-entry .entry-time {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.field-entry .entry-type {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+}
+
+.field-entry .entry-note {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.field-entry .entry-photo {
+  margin-top: 8px;
+  border-radius: 8px;
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.field-entry .delete-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  line-height: 1;
+}
+
+.field-entry .delete-btn:active { color: var(--red); }
+
+.entry-count {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.export-bar {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STRATEGY MODE CARDS
+   ═══════════════════════════════════════════════════════════════ */
+.mode-card .mode-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.mode-card .mode-name {
+  font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOAST NOTIFICATION — brief save confirmation
+   ═══════════════════════════════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--toast-bg);
+  color: var(--text);
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+  z-index: 1000;
+  border: 1px solid var(--accent);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="header" id="app-header"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TAB BAR
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="tab-bar" id="tab-bar">
+  <button data-tab="plan" class="active">Plan</button>
+  <button data-tab="gear">Gear</button>
+  <button data-tab="insights">Intel</button>
+  <button data-tab="results">Results</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TAB CONTENT
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="tab-content active" id="tab-plan"></div>
+<div class="tab-content" id="tab-gear"></div>
+<div class="tab-content" id="tab-insights"></div>
+<div class="tab-content" id="tab-results"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   TRIP DATA — Injected by generate_app.py
+   ═══════════════════════════════════════════════════════════════ */
+const TRIP = {
+  "id": "spruce-lake-2026-10-01",
+  "title": "Spruce Lake Trophy Brookies",
+  "dates": "2026-10-01 to 2026-10-04",
+  "base": "Spruce Lake, West Canada Lakes Wilderness, NY",
+  "status": "planned",
+  "strategy": {
+    "summary": "Base camp at Spruce Lake lean-to #2. Four days focused on the deepest, most productive wild brook trout water in the West Canada Lakes Wilderness. Map structure Day 1, exploit it Days 2-4. Side quest to Balsam Lake for heritage strain trophies.",
+    "modes": [
+      {
+        "name": "Structure Hunt",
+        "trigger": "Day 1 — always",
+        "tipups": "N/A",
+        "target": "Map drop-offs, inlet zones, and submerged structure with sounder",
+        "location": "Full perimeter troll of Spruce Lake"
+      },
+      {
+        "name": "Inlet Mode",
+        "trigger": "Pre-spawn fish staging near Balsam Lake Outlet",
+        "tipups": "N/A",
+        "target": "Trophy brook trout at inlet mouth and adjacent drop-offs",
+        "location": "Northeast shore — Balsam Lake Outlet flow into Spruce Lake"
+      },
+      {
+        "name": "Deep Drop Mode",
+        "trigger": "Bright/calm conditions push fish off shore",
+        "tipups": "N/A",
+        "target": "Troll deep structure edges with Lake Clear Wabblers",
+        "location": "Central basin drop-offs (located during Day 1 scouting)"
+      }
+    ]
+  },
+  "days": [
+    {
+      "day": "Thu 1",
+      "weather": "55/35°F, light wind, partly cloudy",
+      "mode": "Scout",
+      "plan": "<strong>Mission: Map the Lake</strong><br>• <em>Drive + Carry</em> — Jessup River Rd to trailhead, 2.7-mi portage to Spruce Lake<br>• <em>Afternoon</em> — Set up base camp at lean-to #2, launch canoes<br>• <em>Evening troll</em> — Full perimeter figure-8 with Lake Clear Wabblers. Note sounder readings at every point, inlet, and shoreline change. Mark drop-offs on waterproof notepad.<br>• <em>Priority</em> — Locate Balsam Lake Outlet inflow and fish the inlet zone until dark",
+      "rating": "setup"
+    },
+    {
+      "day": "Fri 2",
+      "weather": "53/33°F, calm, overcast expected",
+      "mode": "Structure Hunt",
+      "plan": "<strong>Full Day on Spruce Lake</strong><br>• <em>Dawn (6:30-8:30 AM)</em> — First-light troll over structure found yesterday. Lake Clear Wabbler + worm, figure-8 patterns over drop-offs<br>• <em>Morning (8:30-11:00)</em> — Work inlet zone (Balsam Lake Outlet). Cast streamers into current seam. Switch to dry flies if surface activity<br>• <em>Midday</em> — Rest, re-rig, eat. Explore shoreline on foot for spawning gravel<br>• <em>Afternoon (2:00-sunset)</em> — Troll deep edges. Slow retrieve along any structure mapped yesterday. Switch to woolly buggers in low light",
+      "rating": "best"
+    },
+    {
+      "day": "Sat 3",
+      "weather": "52/32°F, variable, chance of showers",
+      "mode": "Structure Hunt",
+      "plan": "<strong>Balsam Lake Side Quest + Spruce PM</strong><br>• <em>Dawn (6:30-8:30)</em> — Troll Spruce Lake best structure from Days 1-2<br>• <em>Mid-morning (9:00)</em> — Pack light kit, bushwhack 0.5 mi east to Balsam Lake. Heritage Windfall strain brookies — same genetics as current NYS record. Fish are visible but hard to catch. Try small streamers, slow presentation<br>• <em>Afternoon</em> — Return to Spruce Lake. Fish inlet zone through evening bite window<br>• <em>Decision point</em> — If Balsam Lake produces, consider a second bushwhack trip Day 4 AM",
+      "rating": "best"
+    },
+    {
+      "day": "Sun 4",
+      "weather": "50/30°F, clearing, frost heavy",
+      "mode": "Structure Hunt",
+      "plan": "<strong>Last Bite + Pack Out</strong><br>• <em>Dawn (6:30-8:30)</em> — Final session. Fish highest-producing zone from previous days<br>• <em>8:30-9:00 AM</em> — Break camp, pack canoes, police campsite<br>• <em>9:00-11:30</em> — 2.7-mi portage out to trailhead<br>• <em>Noon</em> — Drive to Speculator for lunch. Debrief over food.",
+      "rating": "conditional"
+    }
+  ],
+  "gear": {
+    "bait": [
+      {
+        "item": "Worms (nightcrawlers)",
+        "qty": "2 containers",
+        "use": "Lake Clear Wabbler trailers + bottom fishing. Baitfish prohibited."
+      },
+      {
+        "item": "Wax worms",
+        "qty": "1 container",
+        "use": "Backup for finicky fish, tipping jigs"
+      }
+    ],
+    "tackle": [
+      {
+        "species": "Brook Trout (trolling)",
+        "lures": "Lake Clear Wabblers (gold + silver), Z-Ray spoons (1/8 oz)",
+        "line": "6-8 lb mono, 18\" fluorocarbon leader"
+      },
+      {
+        "species": "Brook Trout (casting)",
+        "lures": "Small Rapalas, inline spinners (Mepps #1-2), small spoons",
+        "line": "4-6 lb mono or braid"
+      },
+      {
+        "species": "Brook Trout (fly)",
+        "lures": "Woolly Buggers (black/olive), Muddler Minnow, Black Ghost, BWO 18-20, Griffiths Gnat",
+        "line": "5-6 wt, floating + sink tip"
+      }
+    ],
+    "tipups": []
+  },
+  "regulations": [
+    {
+      "species": "Brook Trout",
+      "size": "None",
+      "limit": "5/day"
+    },
+    {
+      "species": "Baitfish",
+      "size": "N/A",
+      "limit": "PROHIBITED — no live minnows allowed"
+    },
+    {
+      "species": "Season",
+      "size": "N/A",
+      "limit": "Closes Oct 15 (ponds/lakes)"
+    },
+    {
+      "species": "Motors",
+      "size": "N/A",
+      "limit": "Prohibited — paddle only"
+    }
+  ],
+  "keyInsights": [
+    "Pre-spawn window: Fish are in maximum feeding mode. Water temp 50-58°F puts them at peak metabolic activity near the surface.",
+    "Lake Clear Wabbler is THE lure — 90% of ADK trophy brookies caught on it. Troll figure-8 patterns. On first tap, STOP and feed line — brookies stun prey first, then return.",
+    "Balsam Lake (0.5 mi bushwhack east): Heritage Windfall strain brookies — same genetics as current NYS record 6 lb 3 oz fish. Almost zero pressure.",
+    "Balsam Lake Outlet (northeast shore) is the primary inflow — pre-spawn fish will stage here. Priority fishing zone.",
+    "No bathymetric map exists. Day 1 sounder mapping is critical — locate the drop-offs that hold big fish in the 70-ft basin."
+  ],
+  "decisionTriggers": [
+    {
+      "condition": "Overcast + light wind",
+      "action": "Stay on Spruce Lake all day. Fish are near surface and roaming freely. Troll aggressively.",
+      "color": "#34A853"
+    },
+    {
+      "condition": "Bright sun + calm",
+      "action": "Fish deeper structure edges. Brook trout tuck under cover — focus on bog edges, submerged logs, Balsam Lake Outlet.",
+      "color": "#E8912D"
+    },
+    {
+      "condition": "Rain or heavy overcast",
+      "action": "Best fishing conditions. Stay out as long as conditions are safe. Brook trout feed most aggressively in low light.",
+      "color": "#34A853"
+    },
+    {
+      "condition": "Wind > 15 mph on Spruce",
+      "action": "Fish sheltered shoreline or bushwhack to Balsam Lake. Don't fight whitecaps in canoes.",
+      "color": "#D44638"
+    },
+    {
+      "condition": "No bites after 2 hours in a zone",
+      "action": "Move. Change depth by 10 ft, change retrieval speed, or relocate 200+ yards along shoreline.",
+      "color": "#4A9EBF"
+    },
+    {
+      "condition": "Balsam Lake produces on Day 3",
+      "action": "Return Day 4 dawn for one more session before packing out.",
+      "color": "#9B72CF"
+    }
+  ],
+  "debrief": null
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   COLOR MAPS
+   ═══════════════════════════════════════════════════════════════ */
+const COLORS = {
+  accent: "#7FA35D", green: "#6B9E4A", orange: "#D4944A",
+  red: "#C46050", purple: "#9B7A95", yellow: "#C4A35A",
+  text: "#D8DDD2", textDim: "#8B9282"
+};
+
+const MODE_COLORS = {
+  Scout: COLORS.accent, Shoal: COLORS.orange, Bay: COLORS.green,
+  "Bay → Shoal": COLORS.yellow, "Shoal → Bay": COLORS.yellow
+};
+
+const RATING_COLORS = {
+  best: COLORS.green, setup: COLORS.accent, conditional: COLORS.yellow,
+  split: COLORS.orange, final: COLORS.textDim
+};
+
+const TYPE_COLORS = {
+  catch: COLORS.green, note: COLORS.accent,
+  condition: COLORS.yellow, gear: COLORS.orange
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════════════════ */
+function badge(text, color) {
+  return `<span class="badge" style="background:${color}22;color:${color};border:1px solid ${color}44">${text}</span>`;
+}
+
+function escapeHTML(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* Show a brief toast notification */
+function showToast(message, duration) {
+  duration = duration || 2000;
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), duration);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TAB SWITCHING
+   ═══════════════════════════════════════════════════════════════ */
+document.getElementById("tab-bar").addEventListener("click", e => {
+  if (e.target.tagName !== "BUTTON") return;
+  const tab = e.target.dataset.tab;
+  document.querySelectorAll(".tab-bar button").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  document.querySelectorAll(".tab-content").forEach(c => c.classList.toggle("active", c.id === "tab-" + tab));
+  /* Refresh results tab to show latest entries */
+  if (tab === "results") renderResults();
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER: HEADER
+   ═══════════════════════════════════════════════════════════════ */
+function renderHeader() {
+  const el = document.getElementById("app-header");
+  el.innerHTML = `
+    <h1>${TRIP.title}</h1>
+    <div class="subtitle">${TRIP.dates} · ${TRIP.base}</div>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER: PLAN TAB
+   ═══════════════════════════════════════════════════════════════ */
+function renderPlan() {
+  const el = document.getElementById("tab-plan");
+  let html = "";
+
+  /* Strategy modes */
+  html += `<div class="section">
+    <div class="section-title">Strategy</div>`;
+
+  if (TRIP.strategy && TRIP.strategy.modes) {
+    TRIP.strategy.modes.forEach(m => {
+      const modeColor = m.name.includes("Shoal") ? COLORS.orange : COLORS.green;
+      html += `<div class="card dark mode-card">
+        <div class="mode-header">
+          <span class="mode-name">${m.name}</span>
+          ${badge(m.tipups, modeColor)}
+        </div>
+        <div class="detail-row">
+          <div><strong>Trigger:</strong> ${m.trigger}</div>
+          <div><strong>Target:</strong> ${m.target}</div>
+          <div><strong>Location:</strong> ${m.location}</div>
+        </div>
+      </div>`;
+    });
+  }
+  html += `</div>`;
+
+  /* Daily plan */
+  html += `<div class="section">
+    <div class="section-title">Daily Plan</div>`;
+
+  if (TRIP.days) {
+    TRIP.days.forEach((d, i) => {
+      const modeColor = MODE_COLORS[d.mode] || COLORS.accent;
+      html += `<div class="card clickable day-card" data-day="${i}">
+        <div class="day-header">
+          <div class="day-info">
+            <div class="mode-bar" style="background:${modeColor}"></div>
+            <div>
+              <div class="day-label">${d.day}</div>
+              <div class="day-weather">${d.weather}</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            ${badge(d.mode, modeColor)}
+            <span class="day-chevron">&#9656;</span>
+          </div>
+        </div>
+        <div class="day-detail">${d.plan}</div>
+      </div>`;
+    });
+  }
+  html += `</div>`;
+
+  /* Regulations */
+  if (TRIP.regulations && TRIP.regulations.length) {
+    html += `<div class="section">
+      <div class="section-title">Regulations</div>
+      <div class="card table-card">
+        <table>
+          <thead><tr><th>Species</th><th>Min</th><th>Limit</th></tr></thead>
+          <tbody>`;
+    TRIP.regulations.forEach(r => {
+      html += `<tr><td>${r.species}</td><td>${r.size}</td><td>${r.limit}</td></tr>`;
+    });
+    html += `</tbody></table></div></div>`;
+  }
+
+  el.innerHTML = html;
+
+  /* Day card expand/collapse */
+  el.querySelectorAll(".day-card").forEach(card => {
+    card.addEventListener("click", () => card.classList.toggle("expanded"));
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER: GEAR TAB
+   ═══════════════════════════════════════════════════════════════ */
+function renderGear() {
+  const el = document.getElementById("tab-gear");
+  let html = "";
+
+  /* Bait order */
+  if (TRIP.gear && TRIP.gear.bait && TRIP.gear.bait.length) {
+    html += `<div class="section">
+      <div class="section-title">Bait Order</div>`;
+    TRIP.gear.bait.forEach(b => {
+      html += `<div class="card gear-item">
+        <div>
+          <div class="name">${b.item}</div>
+          <div class="use">${b.use}</div>
+        </div>
+        <div class="qty">${b.qty}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  /* Tackle */
+  if (TRIP.gear && TRIP.gear.tackle && TRIP.gear.tackle.length) {
+    html += `<div class="section">
+      <div class="section-title">Tackle</div>`;
+    TRIP.gear.tackle.forEach(t => {
+      html += `<div class="card">
+        <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px">${t.species}</div>
+        <div class="detail-row">
+          <div><strong>Lures:</strong> ${t.lures}</div>
+          <div><strong>Line:</strong> ${t.line}</div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  /* Tip-up rigs */
+  if (TRIP.gear && TRIP.gear.tipups && TRIP.gear.tipups.length) {
+    html += `<div class="section">
+      <div class="section-title">Tip-Up Rigs</div>`;
+    TRIP.gear.tipups.forEach(t => {
+      const color = t.type === "Salmon" ? COLORS.purple : COLORS.orange;
+      html += `<div class="card" style="border-left:3px solid ${color}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:14px;font-weight:700;color:var(--text)">${t.type}</span>
+          ${badge("×" + t.qty, color)}
+        </div>
+        <div class="detail-row">
+          <div><strong>Depth:</strong> ${t.depth}</div>
+          <div><strong>Rig:</strong> ${t.rig}</div>
+          ${t.note ? `<div class="tipup-note">${t.note}</div>` : ""}
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  el.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER: INTEL TAB
+   ═══════════════════════════════════════════════════════════════ */
+function renderInsights() {
+  const el = document.getElementById("tab-insights");
+  let html = "";
+
+  /* Key insights */
+  if (TRIP.keyInsights && TRIP.keyInsights.length) {
+    html += `<div class="section">
+      <div class="section-title">Key Intelligence</div>`;
+    TRIP.keyInsights.forEach((text, i) => {
+      html += `<div class="card insight-card">
+        <div class="insight-num">${i + 1}</div>
+        <div class="insight-text">${text}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  /* Decision triggers */
+  if (TRIP.decisionTriggers && TRIP.decisionTriggers.length) {
+    html += `<div class="section">
+      <div class="section-title">Decision Triggers</div>
+      <div class="card dark triggers-card">`;
+    TRIP.decisionTriggers.forEach(t => {
+      html += `<div class="trigger-line"><strong style="color:${t.color || COLORS.accent}">${t.condition} →</strong> ${t.action}</div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  el.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INDEXEDDB — Field Notes Storage
+   ═══════════════════════════════════════════════════════════════ */
+const DB_NAME = "field-planner";
+const DB_VERSION = 1;
+const STORE_NAME = "entries";
+let db = null;
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    if (db) { resolve(db); return; }
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(STORE_NAME)) {
+        d.createObjectStore(STORE_NAME, { keyPath: "id", autoIncrement: true });
+      }
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(db); };
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+/* Get all entries for this trip */
+async function getEntries() {
+  const d = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = d.transaction(STORE_NAME, "readonly");
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.getAll();
+    req.onsuccess = () => {
+      /* Filter to this trip and sort by timestamp */
+      const entries = req.result
+        .filter(e => e.tripId === TRIP.id)
+        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      resolve(entries);
+    };
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+/* Add a new entry */
+async function addEntry(entry) {
+  const d = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = d.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
+    entry.tripId = TRIP.id;
+    entry.timestamp = new Date().toISOString();
+    const req = store.add(entry);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+/* Delete an entry by ID */
+async function deleteEntry(id) {
+  const d = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = d.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.delete(id);
+    req.onsuccess = () => resolve();
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PHOTO RESIZE — Canvas downscale for storage efficiency
+   Max 800px wide, 80% JPEG quality (~100-200KB per photo)
+   ═══════════════════════════════════════════════════════════════ */
+function resizePhoto(file, maxWidth, quality) {
+  maxWidth = maxWidth || 800;
+  quality = quality || 0.8;
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER: RESULTS TAB (Field Capture)
+   ═══════════════════════════════════════════════════════════════ */
+let currentType = "catch";
+let pendingPhoto = null;
+
+async function renderResults() {
+  const el = document.getElementById("tab-results");
+  const entries = await getEntries();
+
+  let html = "";
+
+  /* Capture form */
+  html += `<div class="section">
+    <div class="section-title">Add Field Entry</div>
+    <div class="capture-form">
+      <textarea id="field-note" placeholder="Laker on sucker, 85ft, 3Chimney east edge..."></textarea>
+      <div class="type-select">
+        <button class="type-btn ${currentType === "catch" ? "active" : ""}" data-type="catch">🐟 Catch</button>
+        <button class="type-btn ${currentType === "note" ? "active" : ""}" data-type="note">📝 Note</button>
+        <button class="type-btn ${currentType === "condition" ? "active" : ""}" data-type="condition">🌤️ Conditions</button>
+        <button class="type-btn ${currentType === "gear" ? "active" : ""}" data-type="gear">🎣 Gear</button>
+      </div>
+      <div id="photo-preview" style="margin-bottom:10px"></div>
+      <div class="capture-actions">
+        <button class="btn btn-primary" id="btn-save">Save Entry</button>
+        <label class="btn btn-secondary" style="margin:0">
+          📷 Photo
+          <input type="file" accept="image/*" capture="environment" class="camera-input" id="photo-input">
+        </label>
+      </div>
+    </div>
+  </div>`;
+
+  /* Entries list */
+  if (entries.length) {
+    html += `<div class="section">
+      <div class="section-title">Field Log</div>
+      <div class="entry-count">${entries.length} entr${entries.length === 1 ? "y" : "ies"}</div>`;
+
+    entries.forEach(entry => {
+      const time = new Date(entry.timestamp);
+      const timeStr = time.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }) +
+        " " + time.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+      const typeColor = TYPE_COLORS[entry.type] || COLORS.accent;
+
+      html += `<div class="card field-entry" data-entry-id="${entry.id}">
+        <button class="delete-btn" data-delete="${entry.id}">✕</button>
+        <div class="entry-time">${timeStr}
+          <span class="entry-type" style="color:${typeColor}">${entry.type}</span>
+        </div>
+        ${entry.note ? `<div class="entry-note">${escapeHTML(entry.note)}</div>` : ""}
+        ${entry.photo ? `<img class="entry-photo" src="${entry.photo}" alt="Field photo">` : ""}
+      </div>`;
+    });
+
+    html += `</div>`;
+
+    /* Export bar */
+    html += `<div class="export-bar">
+      <button class="btn btn-green" id="btn-export">📤 Export Field Data</button>
+      <button class="btn btn-red" id="btn-clear">Clear All</button>
+    </div>`;
+  }
+
+  el.innerHTML = html;
+
+  /* Wire up event handlers */
+  el.querySelectorAll(".type-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentType = btn.dataset.type;
+      el.querySelectorAll(".type-btn").forEach(b => b.classList.toggle("active", b.dataset.type === currentType));
+    });
+  });
+
+  const photoInput = document.getElementById("photo-input");
+  if (photoInput) {
+    photoInput.addEventListener("change", async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      pendingPhoto = await resizePhoto(file);
+      document.getElementById("photo-preview").innerHTML =
+        `<img src="${pendingPhoto}" style="max-width:100%;max-height:150px;border-radius:8px;margin-top:8px">
+         <button class="btn btn-red" style="margin-top:6px" id="btn-remove-photo">Remove</button>`;
+      document.getElementById("btn-remove-photo").addEventListener("click", () => {
+        pendingPhoto = null;
+        document.getElementById("photo-preview").innerHTML = "";
+        photoInput.value = "";
+      });
+    });
+  }
+
+  const saveBtn = document.getElementById("btn-save");
+  if (saveBtn) {
+    saveBtn.addEventListener("click", async () => {
+      const noteEl = document.getElementById("field-note");
+      const note = noteEl.value.trim();
+      if (!note && !pendingPhoto) return;
+      try {
+        await addEntry({ type: currentType, note, photo: pendingPhoto || null });
+        noteEl.value = "";
+        pendingPhoto = null;
+        showToast("Entry saved");
+        renderResults();
+      } catch (err) {
+        alert("Failed to save entry: " + err.message);
+      }
+    });
+  }
+
+  /* Delete buttons */
+  el.querySelectorAll("[data-delete]").forEach(btn => {
+    btn.addEventListener("click", async e => {
+      e.stopPropagation();
+      const id = Number(btn.dataset.delete);
+      if (confirm("Delete this entry?")) {
+        try {
+          await deleteEntry(id);
+          renderResults();
+        } catch (err) {
+          alert("Failed to delete entry: " + err.message);
+        }
+      }
+    });
+  });
+
+  /* Export */
+  const exportBtn = document.getElementById("btn-export");
+  if (exportBtn) {
+    exportBtn.addEventListener("click", async () => {
+      const allEntries = await getEntries();
+      const exportData = {
+        trip_id: TRIP.id,
+        trip_title: TRIP.title,
+        exported: new Date().toISOString(),
+        entries: allEntries.map(e => ({
+          timestamp: e.timestamp,
+          type: e.type,
+          note: e.note,
+          photo: e.photo
+        }))
+      };
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `field_notes_${TRIP.id}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  /* Clear all */
+  const clearBtn = document.getElementById("btn-clear");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", async () => {
+      if (!confirm("Delete ALL field entries for this trip? This cannot be undone.")) return;
+      const allEntries = await getEntries();
+      for (const entry of allEntries) await deleteEntry(entry.id);
+      renderResults();
+    });
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INIT — Render all tabs on load
+   ═══════════════════════════════════════════════════════════════ */
+renderHeader();
+renderPlan();
+renderGear();
+renderInsights();
+if (!window.indexedDB) {
+  document.getElementById("tab-results").innerHTML =
+    '<div class="field-empty"><div class="icon">&#x26A0;</div><h3>Field Capture Unavailable</h3>' +
+    '<p>Your browser does not support IndexedDB, which is required for field capture.</p></div>';
+} else {
+  try {
+    renderResults();
+  } catch (err) {
+    document.getElementById("tab-results").innerHTML =
+      '<div class="field-empty"><div class="icon">&#x26A0;</div><h3>Field Capture Unavailable</h3>' +
+      '<p>Could not initialize field capture storage.</p></div>';
+  }
+}
+
+/* PWA — register service worker when served from hosting (not local file://) */
+if (location.protocol === 'https:') {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+  /* Inject manifest link dynamically */
+  const manifestLink = document.createElement('link');
+  manifestLink.rel = 'manifest';
+  manifestLink.href = 'manifest.json';
+  document.head.appendChild(manifestLink);
+}
+</script>
+</body>
+</html>
