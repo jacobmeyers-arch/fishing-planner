@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background: Deep Woods dark green rounded rect -->
+  <rect width="512" height="512" rx="96" fill="#2C3227"/>
+
+  <!-- Fish silhouette: accent green, stylized trout shape -->
+  <g transform="translate(256,256) scale(0.7)">
+    <!-- Body -->
+    <ellipse cx="0" cy="0" rx="200" ry="70" fill="#7FA35D"/>
+    <!-- Tail fin -->
+    <polygon points="180,-10 250,-60 250,60 180,10" fill="#7FA35D"/>
+    <!-- Dorsal fin -->
+    <polygon points="-40,-70 40,-70 60,-120 -20,-110" fill="#5D7A44"/>
+    <!-- Eye -->
+    <circle cx="-140" cy="-10" r="16" fill="#2C3227"/>
+    <circle cx="-140" cy="-10" r="8" fill="#D8DDD2"/>
+    <!-- Pectoral fin -->
+    <polygon points="-80,50 -40,50 -60,90" fill="#5D7A44"/>
+  </g>
+</svg>
