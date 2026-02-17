@@ -197,29 +197,81 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Lake George Ice Fishing</title>
-<meta name="theme-color" content="#262E22">
+<meta name="theme-color" content="#2A2320">
 <meta name="apple-mobile-web-app-title" content="Lake George Ice Fishing">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <style>
 /* ═══════════════════════════════════════════════════════════════
-   DESIGN TOKENS — Deep Woods (Adirondack forest palette)
+   DESIGN TOKENS — Build It USA (Colonial Carpentry)
    ═══════════════════════════════════════════════════════════════ */
 :root {
-  --bg: #2C3227;
-  --card: #353D30;
-  --card-hover: #3E4738;
-  --accent: #7FA35D;
-  --accent-dim: #5D7A44;
+  /* Wrought Iron & Hardware */
+  --bg: #2A2320;
+  --card: #3B3530;
+  --card-hover: #4D4540;
+  --header-bg: #1A1714;
+  --border: #4D4540;
+  --toast-bg: #4A3D2E;
+  /* Brass Accent */
+  --accent: #B8975A;
+  --accent-dim: #8A6E3A;
+  --brass: #B8975A;
+  --brass-light: #D4B878;
+  --brass-dark: #8A6E3A;
+  /* Parchment Text */
+  --text: #F0E8DA;
+  --text-dim: #C4B5A0;
+  /* Status */
   --green: #6B9E4A;
   --orange: #D4944A;
-  --red: #C46050;
-  --purple: #9B7A95;
-  --yellow: #C4A35A;
-  --text: #D8DDD2;
-  --text-dim: #8B9282;
-  --border: #4A5342;
-  --header-bg: #262E22;
-  --toast-bg: #4A5342;
+  --red: #C25555;
+  --purple: #5B7A9A;
+  --yellow: #D4B878;
+  /* Wood & Iron Extended */
+  --wood-rich: #6B5B45;
+  --wood-dark: #4A3D2E;
+  --wood-mid: #8B7D6B;
+  --iron-mid: #4D4540;
+  --iron-faint: #6B6358;
+  --parchment: #F0E8DA;
+  --parchment-dark: #E4D9C8;
+  --warm-red: #C25555;
+  --dusty-red: #9E4040;
+  /* Font Stacks (system fallbacks for Build It USA typography) */
+  --font-pencil: 'Marker Felt', 'Segoe Print', 'Comic Sans MS', cursive;
+  --font-serif: Georgia, 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+  --font-hand: 'Segoe Script', 'Bradley Hand', 'Apple Chancery', cursive;
+  --font-ui: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AGED PAPER TEXTURE — subtle parchment grain overlay
+   ═══════════════════════════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLUEPRINT CORNER MARKS
+   ═══════════════════════════════════════════════════════════════ */
+body::after {
+  content: '';
+  position: fixed;
+  top: 6px;
+  left: 6px;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid var(--iron-faint);
+  border-left: 2px solid var(--iron-faint);
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.4;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -228,7 +280,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-serif);
   font-size: 17px;
   background: var(--bg);
   color: var(--text);
@@ -238,6 +290,7 @@ body {
   padding-bottom: 40px;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
+  position: relative;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -245,20 +298,26 @@ body {
    ═══════════════════════════════════════════════════════════════ */
 .header {
   padding: 20px 16px 12px;
+  border-bottom: 3px solid var(--wood-rich);
+  background: linear-gradient(180deg, var(--header-bg) 0%, var(--bg) 100%);
 }
 
 .header h1 {
-  font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
+  font-family: var(--font-pencil);
   font-size: 22px;
-  font-weight: 800;
-  color: var(--text);
+  font-weight: 400;
+  color: var(--parchment);
   line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .header .subtitle {
+  font-family: var(--font-serif);
   font-size: 14px;
   color: var(--text-dim);
   margin-top: 4px;
+  font-style: italic;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -266,9 +325,10 @@ body {
    ═══════════════════════════════════════════════════════════════ */
 .tab-bar {
   display: flex;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--wood-rich);
   margin: 0 0 16px;
   padding: 0 16px;
+  background: var(--header-bg);
 }
 
 .tab-bar button {
@@ -278,16 +338,32 @@ body {
   border: none;
   border-bottom: 2px solid transparent;
   color: var(--text-dim);
+  font-family: var(--font-pencil);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 400;
   cursor: pointer;
   transition: all 0.15s;
   text-align: center;
+  position: relative;
 }
 
 .tab-bar button.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  color: var(--brass-light);
+  border-bottom-color: var(--brass);
+}
+
+/* Brass nail head on active tab */
+.tab-bar button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--brass-light), var(--brass), var(--brass-dark));
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 
 .tab-content { display: none; padding: 0 16px; }
@@ -298,21 +374,35 @@ body {
    ═══════════════════════════════════════════════════════════════ */
 .card {
   background: var(--card);
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 20px,
+    rgba(107,91,69,0.03) 20px,
+    rgba(107,91,69,0.03) 21px
+  );
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 14px;
   border: 1px solid var(--border);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(42,35,32,0.08), inset 0 0 0 1px rgba(139,125,107,0.12);
 }
 
-.card.dark { background: var(--header-bg); }
+.card.dark {
+  background: var(--header-bg);
+  box-shadow: 0 2px 0 0 var(--wood-rich), 0 4px 0 0 var(--wood-dark),
+              0 8px 16px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(139,125,107,0.15);
+}
 
 .card.clickable {
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s, box-shadow 0.15s;
 }
 
-.card.clickable:active { background: var(--card-hover); }
+.card.clickable:active {
+  background: var(--card-hover);
+  box-shadow: 0 1px 4px rgba(42,35,32,0.12), inset 0 0 0 1px rgba(139,125,107,0.15);
+}
 
 /* ═══════════════════════════════════════════════════════════════
    BADGES
@@ -320,9 +410,10 @@ body {
 .badge {
   display: inline-block;
   padding: 2px 10px;
-  border-radius: 12px;
+  border-radius: 4px;
+  font-family: var(--font-pencil);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -333,15 +424,29 @@ body {
    SECTION HEADERS
    ═══════════════════════════════════════════════════════════════ */
 .section-title {
+  font-family: var(--font-pencil);
   font-size: 14px;
-  font-weight: 700;
-  color: var(--accent);
+  font-weight: 400;
+  color: var(--brass-light);
   text-transform: uppercase;
   letter-spacing: 1.2px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+/* Wood-grain divider line after section titles */
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 3px;
+  background: repeating-linear-gradient(90deg,
+    var(--wood-rich) 0px, var(--wood-dark) 3px,
+    transparent 3px, transparent 8px
+  );
+  border-radius: 1px;
+  opacity: 0.6;
 }
 
 .section { margin-bottom: 20px; }
@@ -368,10 +473,10 @@ body {
 }
 
 .day-card .day-label {
-  font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
+  font-family: var(--font-pencil);
   font-size: 15px;
-  font-weight: 700;
-  color: var(--text);
+  font-weight: 400;
+  color: var(--parchment);
 }
 
 .day-card .day-weather {
@@ -429,8 +534,9 @@ body {
 
 .table-card th {
   padding: 8px 12px;
-  color: var(--text-dim);
-  font-weight: 600;
+  color: var(--brass-light);
+  font-family: var(--font-pencil);
+  font-weight: 400;
   text-align: left;
   font-size: 14px;
   text-transform: uppercase;
@@ -459,11 +565,12 @@ body {
 .gear-item .use { font-size: 14px; color: var(--text-dim); }
 
 .gear-item .qty {
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-  color: var(--accent);
-  border-radius: 8px;
+  background: color-mix(in srgb, var(--brass) 15%, transparent);
+  color: var(--brass-light);
+  border-radius: 4px;
   padding: 3px 10px;
-  font-size: 14px;
+  font-family: var(--font-hand);
+  font-size: 16px;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -497,18 +604,20 @@ body {
 }
 
 .insight-num {
-  min-width: 22px;
-  height: 22px;
-  border-radius: 11px;
-  background: color-mix(in srgb, var(--accent) 20%, transparent);
-  color: var(--accent);
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--brass-light), var(--brass), var(--brass-dark));
+  color: var(--header-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-family: var(--font-hand);
+  font-size: 15px;
   font-weight: 700;
   margin-top: 1px;
   flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .insight-text { font-size: 14px; color: var(--text); line-height: 1.6; }
@@ -535,7 +644,7 @@ body {
 }
 
 .field-empty .icon { font-size: 40px; margin-bottom: 12px; }
-.field-empty h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.field-empty h3 { font-family: var(--font-pencil); font-size: 16px; font-weight: 400; margin-bottom: 6px; }
 .field-empty p { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
 
 .capture-form {
@@ -566,11 +675,12 @@ body {
 .capture-form .type-btn {
   padding: 14px 14px;
   border-radius: 8px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--wood-rich);
   background: var(--card);
   color: var(--text-dim);
+  font-family: var(--font-pencil);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
 }
 
@@ -597,8 +707,18 @@ body {
   gap: 6px;
 }
 
-.btn-primary { background: var(--accent); color: white; }
-.btn-secondary { background: var(--card); color: var(--text-dim); border: 1px solid var(--border); }
+.btn-primary {
+  background: linear-gradient(180deg, var(--brass) 0%, var(--brass-dark) 100%);
+  color: var(--header-bg);
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(42,35,32,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-secondary {
+  background: var(--card);
+  color: var(--text-dim);
+  border: 1px solid var(--wood-rich);
+  box-shadow: 0 2px 4px rgba(42,35,32,0.15), inset 0 1px 0 rgba(255,255,255,0.04);
+}
 .btn-green { background: var(--green); color: white; }
 .btn-red { background: var(--red); color: white; font-size: 14px; padding: 6px 12px; }
 
@@ -683,10 +803,10 @@ body {
 }
 
 .mode-card .mode-name {
-  font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
+  font-family: var(--font-pencil);
   font-size: 16px;
-  font-weight: 700;
-  color: var(--text);
+  font-weight: 400;
+  color: var(--parchment);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -697,23 +817,67 @@ body {
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  background: var(--toast-bg);
-  color: var(--text);
+  background: var(--wood-dark);
+  color: var(--parchment);
   padding: 12px 24px;
-  border-radius: 10px;
+  border-radius: 8px;
+  font-family: var(--font-pencil);
   font-size: 14px;
-  font-weight: 600;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  font-weight: 400;
+  box-shadow: 0 2px 0 0 var(--wood-rich), 0 4px 16px rgba(0,0,0,0.4);
   opacity: 0;
   transition: opacity 0.25s ease, transform 0.25s ease;
   pointer-events: none;
   z-index: 1000;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--brass-dark);
 }
 
 .toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MAPS
+   ═══════════════════════════════════════════════════════════════ */
+.map-card { padding: 0; overflow: hidden; }
+.map-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: zoom-in;
+}
+.map-card img.zoomed {
+  width: 200%;
+  max-width: none;
+  cursor: zoom-out;
+}
+.map-card .map-info {
+  padding: 12px 16px;
+}
+.map-card .map-title {
+  font-family: var(--font-pencil);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--parchment);
+  margin-bottom: 4px;
+}
+.map-card .map-caption {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+.map-card .map-source {
+  font-size: 11px;
+  color: var(--text-dim);
+  opacity: 0.7;
+  margin-top: 6px;
+  font-style: italic;
+}
+.map-scroll-container {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  max-height: 70vh;
 }
 </style>
 </head>
@@ -731,6 +895,7 @@ body {
   <button data-tab="plan" class="active">Plan</button>
   <button data-tab="gear">Gear</button>
   <button data-tab="insights">Intel</button>
+  <button data-tab="maps" id="maps-tab-btn" style="display:none">Maps</button>
   <button data-tab="results">Results</button>
 </div>
 
@@ -740,6 +905,7 @@ body {
 <div class="tab-content active" id="tab-plan"></div>
 <div class="tab-content" id="tab-gear"></div>
 <div class="tab-content" id="tab-insights"></div>
+<div class="tab-content" id="tab-maps"></div>
 <div class="tab-content" id="tab-results"></div>
 <div class="toast" id="toast"></div>
 
@@ -933,9 +1099,10 @@ const TRIP = {
    COLOR MAPS
    ═══════════════════════════════════════════════════════════════ */
 const COLORS = {
-  accent: "#7FA35D", green: "#6B9E4A", orange: "#D4944A",
-  red: "#C46050", purple: "#9B7A95", yellow: "#C4A35A",
-  text: "#D8DDD2", textDim: "#8B9282"
+  accent: "#B8975A", green: "#6B9E4A", orange: "#D4944A",
+  red: "#C25555", purple: "#5B7A9A", yellow: "#D4B878",
+  text: "#F0E8DA", textDim: "#C4B5A0",
+  brass: "#B8975A", brassLight: "#D4B878", warmRed: "#C25555"
 };
 
 const MODE_COLORS = {
@@ -1170,6 +1337,42 @@ function renderInsights() {
   }
 
   el.innerHTML = html;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER: MAPS TAB
+   ═══════════════════════════════════════════════════════════════ */
+function renderMaps() {
+  if (!TRIP.maps || !TRIP.maps.length) return;
+
+  /* Show the Maps tab button */
+  const btn = document.getElementById("maps-tab-btn");
+  if (btn) btn.style.display = "";
+
+  const el = document.getElementById("tab-maps");
+  let html = '<div class="section"><div class="section-title">Reference Maps</div>';
+
+  TRIP.maps.forEach((m, i) => {
+    html += `<div class="card map-card">
+      <div class="map-scroll-container">
+        <img src="${m.data}" alt="${escapeHTML(m.title)}" id="map-img-${i}" loading="lazy">
+      </div>
+      <div class="map-info">
+        <div class="map-title">${escapeHTML(m.title)}</div>
+        <div class="map-caption">${escapeHTML(m.caption)}</div>
+        ${m.source ? `<div class="map-source">${escapeHTML(m.source)}</div>` : ""}
+      </div>
+    </div>`;
+  });
+
+  html += '</div>';
+  el.innerHTML = html;
+
+  /* Tap to zoom/unzoom maps */
+  el.querySelectorAll(".map-card img").forEach(img => {
+    img.addEventListener("click", () => img.classList.toggle("zoomed"));
+  });
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1438,6 +1641,7 @@ renderHeader();
 renderPlan();
 renderGear();
 renderInsights();
+renderMaps();
 if (!window.indexedDB) {
   document.getElementById("tab-results").innerHTML =
     '<div class="field-empty"><div class="icon">&#x26A0;</div><h3>Field Capture Unavailable</h3>' +
