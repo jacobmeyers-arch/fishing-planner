@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#262E22">
+<meta name="theme-color" content="#2A2320">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Field Planner</title>
@@ -15,20 +15,57 @@
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <style>
 :root {
-  --bg: #2C3227;
-  --card: #353D30;
-  --card-hover: #3E4738;
-  --accent: #7FA35D;
-  --text: #D8DDD2;
-  --text-dim: #8B9282;
-  --border: #4A5342;
-  --header-bg: #262E22;
+  /* Wrought Iron & Hardware */
+  --bg: #2A2320;
+  --card: #3B3530;
+  --card-hover: #4D4540;
+  --accent: #B8975A;
+  --text: #F0E8DA;
+  --text-dim: #C4B5A0;
+  --border: #4D4540;
+  --header-bg: #1A1714;
+  --brass: #B8975A;
+  --brass-light: #D4B878;
+  --brass-dark: #8A6E3A;
+  --wood-rich: #6B5B45;
+  --wood-dark: #4A3D2E;
+  --iron-faint: #6B6358;
+  --parchment: #F0E8DA;
+  /* Font Stacks */
+  --font-pencil: 'Marker Felt', 'Segoe Print', 'Comic Sans MS', cursive;
+  --font-serif: Georgia, 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+}
+
+/* Aged paper texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* Blueprint corner mark */
+body::after {
+  content: '';
+  position: fixed;
+  top: 6px;
+  left: 6px;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid var(--iron-faint);
+  border-left: 2px solid var(--iron-faint);
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.4;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-serif);
   font-size: 17px;
   background: var(--bg);
   color: var(--text);
@@ -37,11 +74,14 @@ body {
   margin: 0 auto;
   padding: 0 16px 40px;
   -webkit-font-smoothing: antialiased;
+  position: relative;
 }
 
 .header {
   padding: 24px 0 20px;
   text-align: center;
+  border-bottom: 3px solid var(--wood-rich);
+  margin-bottom: 16px;
 }
 
 .header img {
@@ -51,35 +91,51 @@ body {
 }
 
 .header h1 {
-  font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
+  font-family: var(--font-pencil);
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .header p {
+  font-family: var(--font-serif);
   font-size: 14px;
   color: var(--text-dim);
   margin-top: 4px;
+  font-style: italic;
 }
 
 .trip-card {
   display: block;
   background: var(--card);
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 20px,
+    rgba(107,91,69,0.03) 20px,
+    rgba(107,91,69,0.03) 21px
+  );
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 12px;
   border: 1px solid var(--border);
   text-decoration: none;
   color: inherit;
-  transition: background 0.15s;
+  transition: background 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(42,35,32,0.08), inset 0 0 0 1px rgba(139,125,107,0.12);
 }
 
-.trip-card:active { background: var(--card-hover); }
+.trip-card:active {
+  background: var(--card-hover);
+  box-shadow: 0 1px 4px rgba(42,35,32,0.12), inset 0 0 0 1px rgba(139,125,107,0.15);
+}
 
 .trip-card h2 {
+  font-family: var(--font-pencil);
   font-size: 16px;
-  font-weight: 700;
-  color: var(--text);
+  font-weight: 400;
+  color: var(--parchment);
   margin-bottom: 4px;
 }
 
