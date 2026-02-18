@@ -520,6 +520,46 @@ body {
 
 .day-detail strong { color: var(--accent); }
 
+/* First/last light callout in daily plan */
+.day-detail .light-times {
+  display: flex;
+  gap: 16px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+  background: color-mix(in srgb, var(--brass) 10%, transparent);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--brass-light);
+  font-family: var(--font-pencil);
+  letter-spacing: 0.5px;
+}
+
+/* Bullet list styling in daily plan */
+.day-detail ul {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 10px;
+}
+
+.day-detail ul li {
+  padding: 2px 0 2px 14px;
+  position: relative;
+  line-height: 1.6;
+}
+
+.day-detail ul li::before {
+  content: '\2022';
+  position: absolute;
+  left: 0;
+  color: var(--text-dim);
+}
+
+.day-detail ul li em {
+  color: var(--brass-light);
+  font-style: normal;
+  font-weight: 600;
+}
+
 /* Chevron indicator for expandable day cards */
 .day-chevron {
   font-size: 18px;
@@ -807,18 +847,28 @@ body {
 /* ═══════════════════════════════════════════════════════════════
    STRATEGY MODE CARDS
    ═══════════════════════════════════════════════════════════════ */
+.mode-card {
+  padding: 10px 14px;
+  margin-bottom: 10px;
+}
+
 .mode-card .mode-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .mode-card .mode-name {
   font-family: var(--font-pencil);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   color: var(--parchment);
+}
+
+.mode-card .detail-row {
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -905,8 +955,10 @@ body {
      ═══════════════════════════════════════════════════════════════ -->
 <div class="tab-bar" id="tab-bar">
   <button data-tab="plan" class="active">Plan</button>
+  <button data-tab="weather">Wx</button>
   <button data-tab="gear">Gear</button>
   <button data-tab="insights">Intel</button>
+  <button data-tab="regs">Regs</button>
   <button data-tab="maps" id="maps-tab-btn" style="display:none">Maps</button>
   <button data-tab="results">Results</button>
 </div>
@@ -915,8 +967,10 @@ body {
      TAB CONTENT
      ═══════════════════════════════════════════════════════════════ -->
 <div class="tab-content active" id="tab-plan"></div>
+<div class="tab-content" id="tab-weather"></div>
 <div class="tab-content" id="tab-gear"></div>
 <div class="tab-content" id="tab-insights"></div>
+<div class="tab-content" id="tab-regs"></div>
 <div class="tab-content" id="tab-maps"></div>
 <div class="tab-content" id="tab-results"></div>
 <div class="toast" id="toast"></div>
@@ -1155,6 +1209,26 @@ function escapeHTML(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+/* Convert "6:52 AM" / "5:30 PM" to military time "0652" / "1730" */
+function toMilitary(timeStr) {
+  const m = (timeStr || "").match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if (!m) return "";
+  let h = parseInt(m[1]);
+  const min = m[2];
+  const ampm = m[3].toUpperCase();
+  if (ampm === "PM" && h !== 12) h += 12;
+  if (ampm === "AM" && h === 12) h = 0;
+  return String(h).padStart(2, "0") + min;
+}
+
+/* Parse first/last light from weather string, return {first, last} in military */
+function parseLightTimes(weather) {
+  const times = (weather || "").match(/\d{1,2}:\d{2}\s*[AP]M/gi) || [];
+  const first = times.find(t => /AM/i.test(t));
+  const last = times.find(t => /PM/i.test(t));
+  return { first: first ? toMilitary(first) : "", last: last ? toMilitary(last) : "" };
+}
+
 /* Show a brief toast notification */
 function showToast(message, duration) {
   duration = duration || 2000;
@@ -1206,15 +1280,23 @@ function renderPlan() {
   if (TRIP.strategy && TRIP.strategy.modes) {
     TRIP.strategy.modes.forEach(m => {
       const modeColor = m.name.includes("Shoal") ? COLORS.orange : COLORS.green;
-      html += `<div class="card dark mode-card">
-        <div class="mode-header">
-          <span class="mode-name">${m.name}</span>
-          ${badge(m.tipups, modeColor)}
+      /* Extract species names from tipups string (e.g. "6 laker + 5 salmon" → "Laker · Salmon") */
+      const species = (m.tipups || "").replace(/\d+\s*/g, "").replace(/\+/g, "·").replace(/\b\w/g, c => c.toUpperCase()).trim();
+      html += `<div class="card clickable day-card mode-card" style="border-left:4px solid ${modeColor}" tabindex="0" role="button" aria-expanded="false">
+        <div class="day-header">
+          <div class="day-info">
+            <div class="mode-bar" style="background:${modeColor}"></div>
+            <div>
+              <div class="day-label" style="color:${modeColor}">${m.name}</div>
+              <div class="day-weather">${m.summary || ""}</div>
+            </div>
+          </div>
+          <span class="day-chevron">&#9656;</span>
         </div>
-        <div class="detail-row">
+        <div class="day-detail">
           <div><strong>Trigger:</strong> ${m.trigger}</div>
           <div><strong>Target:</strong> ${m.target}</div>
-          <div><strong>Location:</strong> ${m.location}</div>
+          <div><strong>Tip-ups:</strong> ${m.tipups}</div>
         </div>
       </div>`;
     });
@@ -1228,13 +1310,32 @@ function renderPlan() {
   if (TRIP.days) {
     TRIP.days.forEach((d, i) => {
       const modeColor = MODE_COLORS[d.mode] || COLORS.accent;
+      const lt = parseLightTimes(d.weather);
+      const lightStr = [lt.first ? `First Light ${lt.first}` : "", lt.last ? `Last Light ${lt.last}` : ""].filter(Boolean).join(" · ");
+
+      /* Convert bullet text (• item<br>) into proper <ul><li> lists */
+      let planHtml = (d.plan || "")
+        .replace(/<br>\s*(?=<strong>)/g, '</ul>')           /* close list before next heading */
+        .replace(/<strong>/g, '</ul><strong>')               /* ensure list closes before headings */
+        .replace(/<\/strong><br>/g, '</strong><ul>')         /* open list after heading */
+        .replace(/•\s*/g, '<li>')                            /* bullets become list items */
+        .replace(/<br>\s*(?=<li>)/g, '')                     /* remove <br> before <li> */
+        .replace(/<li>(.+?)(?=<li>|<\/ul>|<strong>|$)/g, '<li>$1</li>')  /* close list items */
+        .replace(/^<\/ul>/, '')                              /* remove leading close tag */
+        .replace(/<ul>\s*<\/ul>/g, '');                      /* remove empty lists */
+
+      /* Clean trailing open <ul> */
+      if ((planHtml.match(/<ul>/g) || []).length > (planHtml.match(/<\/ul>/g) || []).length) {
+        planHtml += '</ul>';
+      }
+
       html += `<div class="card clickable day-card" data-day="${i}" tabindex="0" role="button" aria-expanded="false">
         <div class="day-header">
           <div class="day-info">
             <div class="mode-bar" style="background:${modeColor}"></div>
             <div>
               <div class="day-label">${d.day}</div>
-              <div class="day-weather">${d.weather}</div>
+              ${lightStr ? `<div class="day-weather">${lightStr}</div>` : ""}
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
@@ -1242,25 +1343,11 @@ function renderPlan() {
             <span class="day-chevron">&#9656;</span>
           </div>
         </div>
-        <div class="day-detail">${d.plan}</div>
+        <div class="day-detail">${planHtml}</div>
       </div>`;
     });
   }
   html += `</div>`;
-
-  /* Regulations */
-  if (TRIP.regulations && TRIP.regulations.length) {
-    html += `<div class="section">
-      <div class="section-title">Regulations</div>
-      <div class="card table-card">
-        <table>
-          <thead><tr><th>Species</th><th>Min</th><th>Limit</th></tr></thead>
-          <tbody>`;
-    TRIP.regulations.forEach(r => {
-      html += `<tr><td>${r.species}</td><td>${r.size}</td><td>${r.limit}</td></tr>`;
-    });
-    html += `</tbody></table></div></div>`;
-  }
 
   el.innerHTML = html;
 
@@ -1347,33 +1434,89 @@ function renderInsights() {
   const el = document.getElementById("tab-insights");
   let html = "";
 
-  /* Key insights */
+  /* Key insights — grouped by species prefix (e.g. "LAKER:", "SALMON:", "PERCH:") */
   if (TRIP.keyInsights && TRIP.keyInsights.length) {
+    const groups = {};
+    TRIP.keyInsights.forEach(text => {
+      const match = text.match(/^([A-Z]+):\s*/);
+      const species = match ? match[1].charAt(0) + match[1].slice(1).toLowerCase() : "General";
+      const tip = match ? text.slice(match[0].length) : text;
+      if (!groups[species]) groups[species] = [];
+      groups[species].push(tip);
+    });
+
     html += `<div class="section">
       <div class="section-title">Key Intelligence</div>`;
-    TRIP.keyInsights.forEach((text, i) => {
-      html += `<div class="card insight-card">
-        <div class="insight-num">${i + 1}</div>
-        <div class="insight-text">${text}</div>
-      </div>`;
-    });
-    html += `</div>`;
-  }
 
-  /* Decision triggers */
-  if (TRIP.decisionTriggers && TRIP.decisionTriggers.length) {
-    html += `<div class="section">
-      <div class="section-title">Decision Triggers</div>
-      <div class="card dark triggers-card">`;
-    TRIP.decisionTriggers.forEach(t => {
-      html += `<div class="trigger-line"><strong style="color:${t.color || COLORS.accent}">${t.condition} →</strong> ${t.action}</div>`;
+    Object.entries(groups).forEach(([species, tips]) => {
+      html += `<div class="card" style="margin-bottom:12px">
+        <div style="font-family:var(--font-pencil);font-size:14px;color:var(--brass-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">${species}</div>
+        <ul style="list-style:none;padding:0;margin:0">`;
+      tips.forEach(tip => {
+        html += `<li style="font-size:14px;color:var(--text);line-height:1.6;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--text-dim)">\u2022</span>${tip}</li>`;
+      });
+      html += `</ul></div>`;
     });
-    html += `</div></div>`;
+
+    html += `</div>`;
   }
 
   el.innerHTML = html;
 }
 
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER: REGULATIONS TAB
+   ═══════════════════════════════════════════════════════════════ */
+function renderRegs() {
+  const el = document.getElementById("tab-regs");
+  if (!TRIP.regulations || !TRIP.regulations.length) return;
+
+  let html = `<div class="section">
+    <div class="section-title">Regulations</div>
+    <div class="card table-card">
+      <table>
+        <thead><tr><th>Species</th><th>Min Size</th><th>Limit</th></tr></thead>
+        <tbody>`;
+  TRIP.regulations.forEach(r => {
+    html += `<tr><td>${r.species}</td><td>${r.size}</td><td>${r.limit}</td></tr>`;
+  });
+  html += `</tbody></table></div></div>`;
+
+  el.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER: WEATHER TAB
+   ═══════════════════════════════════════════════════════════════ */
+function renderWeather() {
+  const el = document.getElementById("tab-weather");
+  if (!TRIP.days || !TRIP.days.length) return;
+
+  let html = `<div class="section">
+    <div class="section-title">Weather</div>`;
+
+  TRIP.days.forEach(d => {
+    const lt = parseLightTimes(d.weather);
+    /* Strip time values from weather to get conditions only */
+    const conditions = (d.weather || "").replace(/,?\s*\d{1,2}:\d{2}\s*[AP]M/gi, "").replace(/,\s*$/, "").trim();
+
+    html += `<div class="card" style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-family:var(--font-pencil);font-size:14px;color:var(--parchment)">${d.day}</span>
+        <span style="font-size:13px;color:var(--text-dim)">${d.mode}</span>
+      </div>
+      <div style="font-size:14px;color:var(--text);margin-bottom:6px">${conditions}</div>
+      <div class="light-times">
+        ${lt.first ? `<span>First Light ${lt.first}</span>` : ""}
+        ${lt.last ? `<span>Last Light ${lt.last}</span>` : ""}
+      </div>
+    </div>`;
+  });
+
+  html += `</div>`;
+  el.innerHTML = html;
+}
 
 /* ═══════════════════════════════════════════════════════════════
    RENDER: MAPS TAB
@@ -1508,7 +1651,6 @@ function resizePhoto(file, maxWidth, quality) {
 /* ═══════════════════════════════════════════════════════════════
    RENDER: RESULTS TAB (Field Capture)
    ═══════════════════════════════════════════════════════════════ */
-let currentType = "catch";
 let pendingPhoto = null;
 let resultsInitialized = false;
 
@@ -1528,13 +1670,10 @@ async function renderEntryList() {
       const time = new Date(entry.timestamp);
       const timeStr = time.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }) +
         " " + time.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
-      const typeColor = TYPE_COLORS[entry.type] || COLORS.accent;
 
       html += `<div class="card field-entry" data-entry-id="${entry.id}">
         <button class="delete-btn" data-action="delete" data-delete="${entry.id}">✕</button>
-        <div class="entry-time">${timeStr}
-          <span class="entry-type" style="color:${typeColor}">${entry.type}</span>
-        </div>
+        <div class="entry-time">${timeStr}</div>
         ${entry.note ? `<div class="entry-note">${escapeHTML(entry.note)}</div>` : ""}
         ${entry.photo ? `<img class="entry-photo" src="${entry.photo}" alt="Field photo">` : ""}
       </div>`;
@@ -1543,7 +1682,7 @@ async function renderEntryList() {
     html += `</div>`;
 
     html += `<div class="export-bar">
-      <button class="btn btn-green" data-action="export">📤 Export Field Data</button>
+      <button class="btn btn-green" data-action="export">Export Field Data</button>
       <button class="btn btn-red" data-action="clear">Clear All</button>
     </div>`;
   }
@@ -1557,20 +1696,14 @@ async function renderResults() {
   /* Only build the form shell once — reuse it across renders */
   if (!resultsInitialized) {
     el.innerHTML = `<div class="section">
-      <div class="section-title">Add Field Entry</div>
+      <div class="section-title">Field Notes</div>
       <div class="capture-form">
         <textarea id="field-note" placeholder="Laker on sucker, 85ft, 3Chimney east edge..."></textarea>
-        <div class="type-select">
-          <button class="type-btn active" data-type="catch">🐟 Catch</button>
-          <button class="type-btn" data-type="note">📝 Note</button>
-          <button class="type-btn" data-type="condition">🌤️ Conditions</button>
-          <button class="type-btn" data-type="gear">🎣 Gear</button>
-        </div>
         <div id="photo-preview" style="margin-bottom:10px"></div>
         <div class="capture-actions">
-          <button class="btn btn-primary" data-action="save">Save Entry</button>
+          <button class="btn btn-primary" data-action="save">Save</button>
           <label class="btn btn-secondary" style="margin:0">
-            📷 Photo
+            Photo
             <input type="file" accept="image/*" capture="environment" class="camera-input" id="photo-input">
           </label>
         </div>
@@ -1581,14 +1714,6 @@ async function renderResults() {
     /* Single delegated listener for ALL clicks in the Results tab */
     el.addEventListener("click", async e => {
       const btn = e.target.closest("[data-action]");
-      const typeBtn = e.target.closest("[data-type]");
-
-      /* Type selector buttons */
-      if (typeBtn) {
-        currentType = typeBtn.dataset.type;
-        el.querySelectorAll(".type-btn").forEach(b => b.classList.toggle("active", b.dataset.type === currentType));
-        return;
-      }
 
       if (!btn) return;
       const action = btn.dataset.action;
@@ -1599,7 +1724,7 @@ async function renderResults() {
         const note = noteEl.value.trim();
         if (!note && !pendingPhoto) return;
         try {
-          await addEntry({ type: currentType, note, photo: pendingPhoto || null });
+          await addEntry({ type: "note", note, photo: pendingPhoto || null });
           noteEl.value = "";
           pendingPhoto = null;
           document.getElementById("photo-preview").innerHTML = "";
@@ -1643,7 +1768,6 @@ async function renderResults() {
           exported: new Date().toISOString(),
           entries: allEntries.map(e => ({
             timestamp: e.timestamp,
-            type: e.type,
             note: e.note,
             photo: e.photo
           }))
@@ -1691,8 +1815,10 @@ async function renderResults() {
    ═══════════════════════════════════════════════════════════════ */
 renderHeader();
 renderPlan();
+renderWeather();
 renderGear();
 renderInsights();
+renderRegs();
 renderMaps();
 if (!window.indexedDB) {
   document.getElementById("tab-results").innerHTML =
