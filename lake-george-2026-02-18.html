@@ -52,14 +52,14 @@
       "day": "Fri 20",
       "weather": "37 / 31°F, 2 mph SW, 60%, ~2.5\", FALLING",
       "mode": "Bay",
-      "plan": "<strong>Objective</strong><br>• Check shoal results, family bay session, optional solo PM push in falling pressure.<br><strong>Early Check: Shoal Tip-Ups</strong><br>• <em>7:00 AM</em> — Solo hike to shoal, check tip-ups, re-bait, note producing depths<br>• Pull 5 salmon tip-ups for bay redeployment, leave 6 laker fishing<br><strong>Morning: Family Bay Session</strong><br>• <em>9:00 AM</em> — Bay with kids, set shanty, deploy 5 salmon tip-ups<br>• <em>9:30–11:30</em> — Perch jigging inside shanty, skim holes every 20–30 min (wet snow)<br>• <em>11:30–12:00</em> — Pull salmon tip-ups, kids to house for lunch<br><strong>Afternoon: Solo Shoal Push (Optional)</strong><br>• <em>1:30 PM</em> — Hike to shoal, re-skim 6 laker holes, redeploy 5 salmon tip-ups<br>• <em>2:00–4:30</em> — Jig deep flat; in falling pressure try mid-water (60' if bottom is 90')<br>• <em>4:30–5:00</em> — Last light, fish until dark",
+      "plan": "<strong>Objective</strong><br>• Check shoal results, family bay session, optional solo PM push in falling pressure.<br><strong>Early Check: Shoal Tip-Ups</strong><br>• <em>7:00 AM</em> — Solo hike to shoal, check tip-ups, re-bait, note producing depths<br>• Pull 5 salmon tip-ups for bay redeployment, leave 6 laker fishing<br><strong>Morning: Family Bay Session</strong><br>• <em>9:00 AM</em> — Bay with kids, set shanty, deploy 5 salmon tip-ups<br>• <em>9:30–11:30</em> — Perch jigging inside shanty, skim holes every 20–30 min (wet snow)<br>• <em>11:30–12:00</em> — Pull salmon tip-ups, kids to house for lunch<br><strong>Afternoon: Solo Shoal Push (Optional)</strong><br>• <em>1:30 PM</em> — Hike to shoal, re-skim 6 laker holes, redeploy 5 salmon tip-ups<br>• <em>2:00–4:30</em> — Jig deep flat; in falling pressure try mid-water (60' if bottom is 90')<br>• <em>4:30–5:00</em> — Fish until dark",
       "rating": ""
     },
     {
       "day": "Sat 21",
       "weather": "39 / 27°F, 13 mph NW, 19%, Rain/snow mix, Sun breaks through",
       "mode": "Mixed",
-      "plan": "<strong>Objective</strong><br>• Bay mode in morning (high wind), shoal push when wind drops in PM.<br><strong>Morning: Bay Mode</strong><br>• <em>8:30 AM</em> — Bay with kids, shanty facing SE (away from NW wind), heater on<br>• <em>8:45</em> — Deploy 5 salmon tip-ups, perch jigging from shanty<br>• <em>10:30–12:00</em> — Pull if wind intensifies, retrieve salmon tip-ups for PM<br><strong>Afternoon: Shoal Mode</strong><br>• <em>2:00 PM</em> — Solo hike as wind drops, check 6 laker tip-ups, redeploy 5 salmon<br>• <em>2:30–4:00</em> — Jig deep flat, post-front clearing often triggers aggressive feeds<br>• <em>4:00–5:00</em> — Salmon window: light change under ice, check all 5 salmon tip-ups<br>• <em>5:00–5:30</em> — Last light, work flags until dark",
+      "plan": "<strong>Objective</strong><br>• Bay mode in morning (high wind), shoal push when wind drops in PM.<br><strong>Morning: Bay Mode</strong><br>• <em>8:30 AM</em> — Bay with kids, shanty facing SE (away from NW wind), heater on<br>• <em>8:45</em> — Deploy 5 salmon tip-ups, perch jigging from shanty<br>• <em>10:30–12:00</em> — Pull if wind intensifies, retrieve salmon tip-ups for PM<br><strong>Afternoon: Shoal Mode</strong><br>• <em>2:00 PM</em> — Solo hike as wind drops, check 6 laker tip-ups, redeploy 5 salmon<br>• <em>2:30–4:00</em> — Jig deep flat, post-front clearing often triggers aggressive feeds<br>• <em>4:00–5:00</em> — Salmon window: light change under ice, check all 5 salmon tip-ups<br>• <em>5:00–5:30</em> — Work flags until dark",
       "rating": ""
     },
     {
@@ -526,7 +526,7 @@ body {
 
 .day-detail strong { color: var(--accent); }
 
-/* First/last light callout in daily plan */
+/* Sunrise/sunset callout in weather tab */
 .day-detail .light-times {
   display: flex;
   gap: 16px;
@@ -1032,14 +1032,14 @@ const TRIP = {
       "day": "Fri 20",
       "weather": "37 / 31°F, 2 mph SW, 60%, ~2.5\", FALLING",
       "mode": "Bay",
-      "plan": "<strong>Objective</strong><br>• Check shoal results, family bay session, optional solo PM push in falling pressure.<br><strong>Early Check: Shoal Tip-Ups</strong><br>• <em>7:00 AM</em> — Solo hike to shoal, check tip-ups, re-bait, note producing depths<br>• Pull 5 salmon tip-ups for bay redeployment, leave 6 laker fishing<br><strong>Morning: Family Bay Session</strong><br>• <em>9:00 AM</em> — Bay with kids, set shanty, deploy 5 salmon tip-ups<br>• <em>9:30–11:30</em> — Perch jigging inside shanty, skim holes every 20–30 min (wet snow)<br>• <em>11:30–12:00</em> — Pull salmon tip-ups, kids to house for lunch<br><strong>Afternoon: Solo Shoal Push (Optional)</strong><br>• <em>1:30 PM</em> — Hike to shoal, re-skim 6 laker holes, redeploy 5 salmon tip-ups<br>• <em>2:00–4:30</em> — Jig deep flat; in falling pressure try mid-water (60' if bottom is 90')<br>• <em>4:30–5:00</em> — Last light, fish until dark",
+      "plan": "<strong>Objective</strong><br>• Check shoal results, family bay session, optional solo PM push in falling pressure.<br><strong>Early Check: Shoal Tip-Ups</strong><br>• <em>7:00 AM</em> — Solo hike to shoal, check tip-ups, re-bait, note producing depths<br>• Pull 5 salmon tip-ups for bay redeployment, leave 6 laker fishing<br><strong>Morning: Family Bay Session</strong><br>• <em>9:00 AM</em> — Bay with kids, set shanty, deploy 5 salmon tip-ups<br>• <em>9:30–11:30</em> — Perch jigging inside shanty, skim holes every 20–30 min (wet snow)<br>• <em>11:30–12:00</em> — Pull salmon tip-ups, kids to house for lunch<br><strong>Afternoon: Solo Shoal Push (Optional)</strong><br>• <em>1:30 PM</em> — Hike to shoal, re-skim 6 laker holes, redeploy 5 salmon tip-ups<br>• <em>2:00–4:30</em> — Jig deep flat; in falling pressure try mid-water (60' if bottom is 90')<br>• <em>4:30–5:00</em> — Fish until dark",
       "rating": ""
     },
     {
       "day": "Sat 21",
       "weather": "39 / 27°F, 13 mph NW, 19%, Rain/snow mix, Sun breaks through",
       "mode": "Mixed",
-      "plan": "<strong>Objective</strong><br>• Bay mode in morning (high wind), shoal push when wind drops in PM.<br><strong>Morning: Bay Mode</strong><br>• <em>8:30 AM</em> — Bay with kids, shanty facing SE (away from NW wind), heater on<br>• <em>8:45</em> — Deploy 5 salmon tip-ups, perch jigging from shanty<br>• <em>10:30–12:00</em> — Pull if wind intensifies, retrieve salmon tip-ups for PM<br><strong>Afternoon: Shoal Mode</strong><br>• <em>2:00 PM</em> — Solo hike as wind drops, check 6 laker tip-ups, redeploy 5 salmon<br>• <em>2:30–4:00</em> — Jig deep flat, post-front clearing often triggers aggressive feeds<br>• <em>4:00–5:00</em> — Salmon window: light change under ice, check all 5 salmon tip-ups<br>• <em>5:00–5:30</em> — Last light, work flags until dark",
+      "plan": "<strong>Objective</strong><br>• Bay mode in morning (high wind), shoal push when wind drops in PM.<br><strong>Morning: Bay Mode</strong><br>• <em>8:30 AM</em> — Bay with kids, shanty facing SE (away from NW wind), heater on<br>• <em>8:45</em> — Deploy 5 salmon tip-ups, perch jigging from shanty<br>• <em>10:30–12:00</em> — Pull if wind intensifies, retrieve salmon tip-ups for PM<br><strong>Afternoon: Shoal Mode</strong><br>• <em>2:00 PM</em> — Solo hike as wind drops, check 6 laker tip-ups, redeploy 5 salmon<br>• <em>2:30–4:00</em> — Jig deep flat, post-front clearing often triggers aggressive feeds<br>• <em>4:00–5:00</em> — Salmon window: light change under ice, check all 5 salmon tip-ups<br>• <em>5:00–5:30</em> — Work flags until dark",
       "rating": ""
     },
     {
@@ -1233,7 +1233,7 @@ function toMilitary(timeStr) {
   return String(h).padStart(2, "0") + min;
 }
 
-/* Parse first/last light from weather string, return {first, last} in military */
+/* Parse sunrise/sunset from weather string, return {first, last} in military */
 function parseLightTimes(weather) {
   const times = (weather || "").match(/\d{1,2}:\d{2}\s*[AP]M/gi) || [];
   const first = times.find(t => /AM/i.test(t));
@@ -1322,9 +1322,6 @@ function renderPlan() {
   if (TRIP.days) {
     TRIP.days.forEach((d, i) => {
       const modeColor = MODE_COLORS[d.mode] || COLORS.accent;
-      const lt = parseLightTimes(d.weather);
-      const lightStr = [lt.first ? `First Light ${lt.first}` : "", lt.last ? `Last Light ${lt.last}` : ""].filter(Boolean).join(" · ");
-
       /* Convert bullet text (• item<br>) into proper <ul><li> lists */
       let planHtml = (d.plan || "")
         .replace(/<br>\s*(?=<strong>)/g, '</ul>')           /* close list before next heading */
@@ -1347,7 +1344,6 @@ function renderPlan() {
             <div class="mode-bar" style="background:${modeColor}"></div>
             <div>
               <div class="day-label">${d.day}</div>
-              ${lightStr ? `<div class="day-weather">${lightStr}</div>` : ""}
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
@@ -1518,11 +1514,11 @@ function renderWeather() {
         <span style="font-family:var(--font-pencil);font-size:14px;color:var(--parchment)">${d.day}</span>
         <span style="font-size:13px;color:var(--text-dim)">${d.mode}</span>
       </div>
-      <div style="font-size:14px;color:var(--text);margin-bottom:6px">${conditions}</div>
       <div class="light-times">
-        ${lt.first ? `<span>First Light ${lt.first}</span>` : ""}
-        ${lt.last ? `<span>Last Light ${lt.last}</span>` : ""}
+        ${lt.first ? `<span>Sunrise ${lt.first}</span>` : ""}
+        ${lt.last ? `<span>Sunset ${lt.last}</span>` : ""}
       </div>
+      <div style="font-size:14px;color:var(--text)">${conditions}</div>
     </div>`;
   });
 
