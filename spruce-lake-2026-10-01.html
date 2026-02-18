@@ -1228,7 +1228,7 @@ function renderPlan() {
   if (TRIP.days) {
     TRIP.days.forEach((d, i) => {
       const modeColor = MODE_COLORS[d.mode] || COLORS.accent;
-      html += `<div class="card clickable day-card" data-day="${i}">
+      html += `<div class="card clickable day-card" data-day="${i}" tabindex="0" role="button" aria-expanded="false">
         <div class="day-header">
           <div class="day-info">
             <div class="mode-bar" style="background:${modeColor}"></div>
@@ -1264,9 +1264,16 @@ function renderPlan() {
 
   el.innerHTML = html;
 
-  /* Day card expand/collapse */
+  /* Day card expand/collapse (click + keyboard) */
   el.querySelectorAll(".day-card").forEach(card => {
-    card.addEventListener("click", () => card.classList.toggle("expanded"));
+    const toggle = () => {
+      const expanded = card.classList.toggle("expanded");
+      card.setAttribute("aria-expanded", expanded);
+    };
+    card.addEventListener("click", toggle);
+    card.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
+    });
   });
 }
 
@@ -1503,36 +1510,15 @@ function resizePhoto(file, maxWidth, quality) {
    ═══════════════════════════════════════════════════════════════ */
 let currentType = "catch";
 let pendingPhoto = null;
+let resultsInitialized = false;
 
-async function renderResults() {
-  const el = document.getElementById("tab-results");
+/* Render only the entries list portion — leaves the form untouched */
+async function renderEntryList() {
+  const listEl = document.getElementById("field-entries");
+  if (!listEl) return;
   const entries = await getEntries();
 
   let html = "";
-
-  /* Capture form */
-  html += `<div class="section">
-    <div class="section-title">Add Field Entry</div>
-    <div class="capture-form">
-      <textarea id="field-note" placeholder="Laker on sucker, 85ft, 3Chimney east edge..."></textarea>
-      <div class="type-select">
-        <button class="type-btn ${currentType === "catch" ? "active" : ""}" data-type="catch">🐟 Catch</button>
-        <button class="type-btn ${currentType === "note" ? "active" : ""}" data-type="note">📝 Note</button>
-        <button class="type-btn ${currentType === "condition" ? "active" : ""}" data-type="condition">🌤️ Conditions</button>
-        <button class="type-btn ${currentType === "gear" ? "active" : ""}" data-type="gear">🎣 Gear</button>
-      </div>
-      <div id="photo-preview" style="margin-bottom:10px"></div>
-      <div class="capture-actions">
-        <button class="btn btn-primary" id="btn-save">Save Entry</button>
-        <label class="btn btn-secondary" style="margin:0">
-          📷 Photo
-          <input type="file" accept="image/*" capture="environment" class="camera-input" id="photo-input">
-        </label>
-      </div>
-    </div>
-  </div>`;
-
-  /* Entries list */
   if (entries.length) {
     html += `<div class="section">
       <div class="section-title">Field Log</div>
@@ -1545,7 +1531,7 @@ async function renderResults() {
       const typeColor = TYPE_COLORS[entry.type] || COLORS.accent;
 
       html += `<div class="card field-entry" data-entry-id="${entry.id}">
-        <button class="delete-btn" data-delete="${entry.id}">✕</button>
+        <button class="delete-btn" data-action="delete" data-delete="${entry.id}">✕</button>
         <div class="entry-time">${timeStr}
           <span class="entry-type" style="color:${typeColor}">${entry.type}</span>
         </div>
@@ -1556,110 +1542,148 @@ async function renderResults() {
 
     html += `</div>`;
 
-    /* Export bar */
     html += `<div class="export-bar">
-      <button class="btn btn-green" id="btn-export">📤 Export Field Data</button>
-      <button class="btn btn-red" id="btn-clear">Clear All</button>
+      <button class="btn btn-green" data-action="export">📤 Export Field Data</button>
+      <button class="btn btn-red" data-action="clear">Clear All</button>
     </div>`;
   }
 
-  el.innerHTML = html;
+  listEl.innerHTML = html;
+}
 
-  /* Wire up event handlers */
-  el.querySelectorAll(".type-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      currentType = btn.dataset.type;
-      el.querySelectorAll(".type-btn").forEach(b => b.classList.toggle("active", b.dataset.type === currentType));
-    });
-  });
+async function renderResults() {
+  const el = document.getElementById("tab-results");
 
-  const photoInput = document.getElementById("photo-input");
-  if (photoInput) {
-    photoInput.addEventListener("change", async e => {
-      const file = e.target.files[0];
-      if (!file) return;
-      pendingPhoto = await resizePhoto(file);
-      document.getElementById("photo-preview").innerHTML =
-        `<img src="${pendingPhoto}" style="max-width:100%;max-height:150px;border-radius:8px;margin-top:8px">
-         <button class="btn btn-red" style="margin-top:6px" id="btn-remove-photo">Remove</button>`;
-      document.getElementById("btn-remove-photo").addEventListener("click", () => {
-        pendingPhoto = null;
-        document.getElementById("photo-preview").innerHTML = "";
-        photoInput.value = "";
-      });
-    });
-  }
+  /* Only build the form shell once — reuse it across renders */
+  if (!resultsInitialized) {
+    el.innerHTML = `<div class="section">
+      <div class="section-title">Add Field Entry</div>
+      <div class="capture-form">
+        <textarea id="field-note" placeholder="Laker on sucker, 85ft, 3Chimney east edge..."></textarea>
+        <div class="type-select">
+          <button class="type-btn active" data-type="catch">🐟 Catch</button>
+          <button class="type-btn" data-type="note">📝 Note</button>
+          <button class="type-btn" data-type="condition">🌤️ Conditions</button>
+          <button class="type-btn" data-type="gear">🎣 Gear</button>
+        </div>
+        <div id="photo-preview" style="margin-bottom:10px"></div>
+        <div class="capture-actions">
+          <button class="btn btn-primary" data-action="save">Save Entry</button>
+          <label class="btn btn-secondary" style="margin:0">
+            📷 Photo
+            <input type="file" accept="image/*" capture="environment" class="camera-input" id="photo-input">
+          </label>
+        </div>
+      </div>
+    </div>
+    <div id="field-entries"></div>`;
 
-  const saveBtn = document.getElementById("btn-save");
-  if (saveBtn) {
-    saveBtn.addEventListener("click", async () => {
-      const noteEl = document.getElementById("field-note");
-      const note = noteEl.value.trim();
-      if (!note && !pendingPhoto) return;
-      try {
-        await addEntry({ type: currentType, note, photo: pendingPhoto || null });
-        noteEl.value = "";
-        pendingPhoto = null;
-        showToast("Entry saved");
-        renderResults();
-      } catch (err) {
-        alert("Failed to save entry: " + err.message);
+    /* Single delegated listener for ALL clicks in the Results tab */
+    el.addEventListener("click", async e => {
+      const btn = e.target.closest("[data-action]");
+      const typeBtn = e.target.closest("[data-type]");
+
+      /* Type selector buttons */
+      if (typeBtn) {
+        currentType = typeBtn.dataset.type;
+        el.querySelectorAll(".type-btn").forEach(b => b.classList.toggle("active", b.dataset.type === currentType));
+        return;
       }
-    });
-  }
 
-  /* Delete buttons */
-  el.querySelectorAll("[data-delete]").forEach(btn => {
-    btn.addEventListener("click", async e => {
-      e.stopPropagation();
-      const id = Number(btn.dataset.delete);
-      if (confirm("Delete this entry?")) {
+      if (!btn) return;
+      const action = btn.dataset.action;
+
+      /* Save entry */
+      if (action === "save") {
+        const noteEl = document.getElementById("field-note");
+        const note = noteEl.value.trim();
+        if (!note && !pendingPhoto) return;
         try {
-          await deleteEntry(id);
-          renderResults();
+          await addEntry({ type: currentType, note, photo: pendingPhoto || null });
+          noteEl.value = "";
+          pendingPhoto = null;
+          document.getElementById("photo-preview").innerHTML = "";
+          const photoInput = document.getElementById("photo-input");
+          if (photoInput) photoInput.value = "";
+          showToast("Entry saved");
+          renderEntryList();
         } catch (err) {
-          alert("Failed to delete entry: " + err.message);
+          alert("Failed to save entry: " + err.message);
         }
       }
-    });
-  });
 
-  /* Export */
-  const exportBtn = document.getElementById("btn-export");
-  if (exportBtn) {
-    exportBtn.addEventListener("click", async () => {
-      const allEntries = await getEntries();
-      const exportData = {
-        trip_id: TRIP.id,
-        trip_title: TRIP.title,
-        exported: new Date().toISOString(),
-        entries: allEntries.map(e => ({
-          timestamp: e.timestamp,
-          type: e.type,
-          note: e.note,
-          photo: e.photo
-        }))
-      };
-      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `field_notes_${TRIP.id}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
+      /* Delete single entry */
+      if (action === "delete") {
+        e.stopPropagation();
+        const id = Number(btn.dataset.delete);
+        if (confirm("Delete this entry?")) {
+          try {
+            await deleteEntry(id);
+            renderEntryList();
+          } catch (err) {
+            alert("Failed to delete entry: " + err.message);
+          }
+        }
+      }
+
+      /* Remove pending photo */
+      if (action === "remove-photo") {
+        pendingPhoto = null;
+        document.getElementById("photo-preview").innerHTML = "";
+        const photoInput = document.getElementById("photo-input");
+        if (photoInput) photoInput.value = "";
+      }
+
+      /* Export */
+      if (action === "export") {
+        const allEntries = await getEntries();
+        const exportData = {
+          trip_id: TRIP.id,
+          trip_title: TRIP.title,
+          exported: new Date().toISOString(),
+          entries: allEntries.map(e => ({
+            timestamp: e.timestamp,
+            type: e.type,
+            note: e.note,
+            photo: e.photo
+          }))
+        };
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `field_notes_${TRIP.id}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      /* Clear all */
+      if (action === "clear") {
+        if (!confirm("Delete ALL field entries for this trip? This cannot be undone.")) return;
+        const allEntries = await getEntries();
+        for (const entry of allEntries) await deleteEntry(entry.id);
+        renderEntryList();
+      }
     });
+
+    /* Single listener for photo input — never re-added */
+    const photoInput = document.getElementById("photo-input");
+    if (photoInput) {
+      photoInput.addEventListener("change", async e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        pendingPhoto = await resizePhoto(file);
+        document.getElementById("photo-preview").innerHTML =
+          `<img src="${pendingPhoto}" style="max-width:100%;max-height:150px;border-radius:8px;margin-top:8px">
+           <button class="btn btn-red" style="margin-top:6px" data-action="remove-photo">Remove</button>`;
+      });
+    }
+
+    resultsInitialized = true;
   }
 
-  /* Clear all */
-  const clearBtn = document.getElementById("btn-clear");
-  if (clearBtn) {
-    clearBtn.addEventListener("click", async () => {
-      if (!confirm("Delete ALL field entries for this trip? This cannot be undone.")) return;
-      const allEntries = await getEntries();
-      for (const entry of allEntries) await deleteEntry(entry.id);
-      renderResults();
-    });
-  }
+  /* Always refresh the entries list */
+  await renderEntryList();
 }
 
 /* ═══════════════════════════════════════════════════════════════

@@ -8,31 +8,36 @@
   Created: 2026-02-16
 */
 
-const CACHE_NAME = 'field-planner-v1';
+const CACHE_NAME = 'field-planner-v2';
 
 /* Skip waiting — activate immediately on install */
 self.addEventListener('install', () => self.skipWaiting());
 
-/* Claim all open clients on activation so SW takes effect immediately */
-self.addEventListener('activate', e => e.waitUntil(clients.claim()));
+/* Claim clients + purge old cache versions on activation */
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    ).then(() => clients.claim())
+  );
+});
 
-/* Cache-first fetch strategy:
-   1. Check cache for existing response
-   2. If cached, return it (instant, works offline)
-   3. If not cached, fetch from network
-   4. Cache the network response for next time
+/* Stale-while-revalidate fetch strategy:
+   1. Serve cached version immediately (fast, works offline)
+   2. Fetch fresh copy from network in background
+   3. Update cache with fresh copy for next visit
+   This ensures updates propagate within one extra page load.
 */
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(cached => {
-      if (cached) return cached;
-      return fetch(e.request).then(response => {
-        if (response.ok) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-        }
-        return response;
-      });
-    })
+    caches.open(CACHE_NAME).then(cache =>
+      cache.match(e.request).then(cached => {
+        const fetchPromise = fetch(e.request).then(response => {
+          if (response.ok) cache.put(e.request, response.clone());
+          return response;
+        }).catch(() => cached);
+        return cached || fetchPromise;
+      })
+    )
   );
 });
